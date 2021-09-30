@@ -69,7 +69,9 @@ class Switch(BaseJump):
                 impossible.append((child,False))
         return self.reduceSuccessors(impossible)
 
-    def getSuccessorConstraints(self, (block, t)):
+#    def getSuccessorConstraints(self, (block, t)):
+    def getSuccessorConstraints(self, a):
+        block, t = a
         if block in self.reverse:
             cmin = min(self.reverse[block])
             cmax = max(self.reverse[block])
