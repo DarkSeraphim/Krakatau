@@ -40,7 +40,7 @@ class CatchSetManager(object):
     def _conscheck(self):
         temp = ExceptionSet.EMPTY
         for v in self.sets.values():
-            assert not v & temp
+            assert (v & temp).empty()
             temp |= v
         assert temp == self.mask
         assert isinstance(self.sets, collections.OrderedDict)

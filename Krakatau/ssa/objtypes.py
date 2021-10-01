@@ -1,3 +1,4 @@
+from functools import reduce
 from ..verifier import verifier_types as vtypes
 
 # types are represented by classname, dimension
@@ -65,7 +66,7 @@ def commonSupertype(env, tts):
     elif not tts:
         return NullTT
 
-    dims = map(dim, tts)
+    dims = list(map(dim, tts))
     newdim = min(dims)
     if max(dims) > newdim or any(baset(tt) == 'java/lang/Object' for tt in tts):
         return TypeTT('java/lang/Object', newdim)

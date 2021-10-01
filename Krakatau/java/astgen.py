@@ -16,7 +16,7 @@ _ssaToTT = {ssa_types.SSA_INT:objtypes.IntTT, ssa_types.SSA_LONG:objtypes.LongTT
 class VarInfo(object):
     def __init__(self, method, blocks, namegen):
         self.env = method.class_.env
-        self.labelgen = LabelGen().next
+        self.labelgen = LabelGen().__next__
 
         returnTypes = parseMethodDescriptor(method.descriptor, unsynthesize=False)[-1]
         self.return_tt = objtypes.verifierToSynthetic(returnTypes[0]) if returnTypes else None
@@ -188,8 +188,8 @@ def _createASTBlock(info, endk, node):
             assert isinstance(block.lines[-1], ssa_ops.ExceptionPhi)
             split_ind = block.lines.index(block.lines[-1].params[0].origin)
 
-        lines_before = filter(None, map(op2expr, block.lines[:split_ind]))
-        lines_after = filter(None, map(op2expr, block.lines[split_ind:]))
+        lines_before = list(filter(None, map(op2expr, block.lines[:split_ind])))
+        lines_after = list(filter(None, map(op2expr, block.lines[split_ind:])))
     else:
         lines_before, lines_after = [], []
 

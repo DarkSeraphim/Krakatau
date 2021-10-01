@@ -11,7 +11,7 @@ class BaseJump(SSAFunctionBase):
 
     def getNormalSuccessors(self): return []
     def getExceptSuccessors(self): return []
-    def getSuccessors(self): return self.getNormalSuccessors() + self.getExceptSuccessors()
+    def getSuccessors(self): return list(self.getNormalSuccessors()) + list(self.getExceptSuccessors())
     def getSuccessorPairs(self): return [(x,False) for x in self.getNormalSuccessors()] + [(x,True) for x in self.getExceptSuccessors()]
     def reduceSuccessors(self, pairsToRemove): return self
 

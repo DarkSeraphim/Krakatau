@@ -1,6 +1,7 @@
 import collections
 from collections import defaultdict as ddict
 import itertools
+from functools import reduce
 
 from .. import graph_util
 from ..ssa import objtypes, ssa_jumps
@@ -792,7 +793,7 @@ def fixTryConstraints(dom, constraints):
         tscope = con.scopes[0]
 
         empty = ExceptionSet.EMPTY
-        ubound_s = set(x for x in tscope.ubound.nodes if not (cset & con.forbidden.get(x, empty)))
+        ubound_s = set(x for x in tscope.ubound.nodes if (cset & con.forbidden.get(x, empty)).empty())
         # Note, we use lbound head, not ubound head! The part dominated by lbound is what we actually care about
         tscope.ubound = _dominatorUBoundClosure(dom, ubound_s, tscope.lbound.head)
         del con.forbidden
@@ -1060,7 +1061,7 @@ def _addBreak_sub(dom, rno_get, body, childcons):
             items += mnode.items
         results.append((nodes, items))
 
-    temp = list(itertools.chain.from_iterable(zip(*results)[1]))
+    temp = list(itertools.chain.from_iterable(list(zip(*results))[1]))
     assert len(temp) == len(childcons) and set(temp) == set(childcons)
     return results
 
@@ -1148,8 +1149,8 @@ def constraintsToSETree(dom, croot, children, nodes):
         seitems[new.entryBlock] = new
 
     assert len(seitems) == 1
-    assert isinstance(seitems.values()[0], SEScope)
-    return seitems.values()[0]
+    assert isinstance(list(seitems.values())[0], SEScope)
+    return list(seitems.values())[0]
 
 def _checkNested(ctree_children):
     # Check tree for proper nesting

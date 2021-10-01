@@ -127,7 +127,7 @@ class TryStatement(LazyLabelBase):
         super(TryStatement, self).__init__(labelfunc, begink, endk)
         self.tryb, self.pairs = tryb, pairs
 
-    def getScopes(self): return (self.tryb,) + zip(*self.pairs)[1]
+    def getScopes(self): return (self.tryb,) + list(zip(*self.pairs))[1]
 
     def print_(self, printer, print_):
         tryb = print_(self.tryb)
@@ -366,7 +366,7 @@ class JavaExpression(object):
 
     def addParens_sub(self): pass
 
-    def isLocalAssign(self): return isinstance(self, Assignment) and isinstance(self.params[0], Local)
+    def isLocalAssign(self): return isinstance(self, Assignment) and isinstance(list(self.params)[0], Local)
 
     def __repr__(self):   # pragma: no cover
         return type(self).__name__.rpartition('.')[-1] + ' ' + visitor.DefaultVisitor().visit(self)

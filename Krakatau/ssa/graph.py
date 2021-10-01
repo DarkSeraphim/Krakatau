@@ -206,7 +206,7 @@ class SSA_Graph(object):
             for var in block.unaryConstraints:
                 v2b[var] = block
             for phi in block.phis:
-                assigns[phi.rval] = map(phi.get, block.predecessors)
+                assigns[phi.rval] = list(map(phi.get, block.predecessors))
 
         UCs = {}
         sccs = graph_util.tarjanSCC(assigns, lambda v:assigns.get(v, []))
@@ -597,7 +597,7 @@ class SSA_Graph(object):
         for block in self.blocks[:]:
             if block is self.entryBlock:
                 continue
-            types = set(zip(*block.predecessors)[1])
+            types = set(list(zip(*block.predecessors))[1])
             if len(types) <= 1:
                 continue
             assert not isinstance(block.jump, (ssa_jumps.Return, ssa_jumps.Rethrow))

@@ -35,6 +35,8 @@ def findFiles(target, recursive, prefix):
             return [target]
 
 def normalizeClassname(name):
+    if isinstance(name, bytes):
+        name = str(name, 'utf8')
     if name.endswith('.class'):
         name = name[:-6]
     # Replacing backslashes is ugly since they can be in valid classnames too, but this seems the best option

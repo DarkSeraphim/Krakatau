@@ -388,7 +388,7 @@ def _simplifyExpressions(expr):
     opfuncs = {'<': operator.lt, '<=': operator.le, '>': operator.gt, '>=': operator.ge}
 
     simplify = _simplifyExpressions
-    expr.params = map(simplify, expr.params)
+    expr.params = list(map(simplify, expr.params))
 
     if isinstance(expr, ast.BinaryInfix):
         left, right = expr.params

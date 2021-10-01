@@ -1,5 +1,6 @@
 import collections
 import operator
+from functools import reduce
 
 from .. import opnames as vops
 from ..verifier import verifier_types
